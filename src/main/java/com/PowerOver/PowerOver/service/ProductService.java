@@ -2,9 +2,12 @@ package com.PowerOver.PowerOver.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.PowerOver.PowerOver.model.Product;
 import com.PowerOver.PowerOver.repository.ProductRepository;
 
+@Service
 public class ProductService {
 
     private final ProductRepository productRepository;
