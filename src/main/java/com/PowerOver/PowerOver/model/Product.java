@@ -1,16 +1,11 @@
 package com.PowerOver.PowerOver.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class Product {
@@ -23,9 +18,19 @@ public class Product {
     private String name;
 
     @Column(nullable = false)
-    private Double price;
+    private double price;
 
     @Column(nullable = false)
     private Integer quantity;
+
+    @ManyToOne
+    private Sale sale;
+
+    public Product(String name, Double price, Integer quantity) {
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+    }
+
 
 }
