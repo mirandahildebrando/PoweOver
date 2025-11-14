@@ -2,6 +2,7 @@ package com.PowerOver.PowerOver.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.PowerOver.PowerOver.model.Product;
@@ -20,7 +21,8 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public List<Product> getAllProducts() {
+    public List<Product> list() {
+        Sort sort = Sort.by("productName").ascending();
         return productRepository.findAll();
     }
     
@@ -30,9 +32,9 @@ public class ProductService {
 
     public Product updateProduct(Long id, Product productDetails) {
         Product product = getProductById(id);
-        product.setName(productDetails.getName());
-        product.setPrice(productDetails.getPrice());
-        product.setQuantity(productDetails.getQuantity());
+        product.setProductName(productDetails.getProductName());
+        product.setProductPrice(productDetails.getProductPrice());
+        product.setProductQuantity(productDetails.getProductQuantity());
         return productRepository.save(product);
     }
 

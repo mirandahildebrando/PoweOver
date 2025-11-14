@@ -1,6 +1,7 @@
 package com.PowerOver.PowerOver.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,19 +13,20 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
+@Table(name = "sales")
 public class Sale {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column (nullable = false)
+    @NotBlank
     private LocalDateTime dateSale;
 
-    @Column (nullable = false)
+    @NotBlank
     private Double totalValue;
 
 
-    @OneToMany(mappedBy = "sale")
+    @NotBlank
     private List<ItemSale> items;
 
 
