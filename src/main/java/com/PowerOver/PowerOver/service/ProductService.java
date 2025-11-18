@@ -17,11 +17,12 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public Product saveProduct(Product product) {
+    public Product createProduct(Product product) {
         return productRepository.save(product);
     }
 
-    public List<Product> list() {
+
+    public List<Product> getAllProducts() {
         Sort sort = Sort.by("productName").ascending();
         return productRepository.findAll();
     }
@@ -38,9 +39,11 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public void deleteProduct(Long id) {
-        Product product = getProductById(id);
-        productRepository.delete(product);
+    public boolean deleteProduct(Long id) {
+        if(productRepository.existsById(id)) {
+            productRepository.deleteById(id);
+            return true;
+        } return false;
     }
 
 }

@@ -10,7 +10,5 @@ import java.util.List;
 @Repository
 public interface SaleRepository extends JpaRepository<Sale, Long> {
 
-    List<Sale> findByDataSaleBetween(LocalDateTime start, LocalDateTime end);
-
-
+    List<Sale> findByDateSaleBetween(LocalDateTime start, LocalDateTime end);
 }

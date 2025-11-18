@@ -18,7 +18,7 @@ public class SaleService {
         this.saleRepository = saleRepository;
     }
 
-    public Sale saveSale(Sale sale) {
+    public Sale createSale(Sale sale) {
         return saleRepository.save(sale);
     }
 
@@ -39,16 +39,13 @@ public class SaleService {
         return saleRepository.save(sale);
     }
 
-    public Sale deleteSale(Long id) {
-        Sale sale = getSaleById(id);
-        saleRepository.deleteById(id);
-        return sale;
+    public boolean deleteSale(Long id) {
+        if(saleRepository.existsById(id)) {
+            saleRepository.deleteById(id);
+            return true;
+        } return false;
     }
 
-    public void finishSale() {
-        LocalDateTime startDate ;
-        LocalDateTime endDate;
 
-    }
 
 }

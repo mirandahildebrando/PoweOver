@@ -2,22 +2,18 @@ package com.PowerOver.PowerOver.controller;
 
 import java.util.List;
 
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.*;
 
 import com.PowerOver.PowerOver.model.Product;
 import com.PowerOver.PowerOver.service.ProductService;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PutMapping;
 
-
-
-@Controller
+@RestController
 @RequestMapping("/products")
 public class ProductController {
 
@@ -28,27 +24,51 @@ public class ProductController {
     }
 
     @PostMapping
-    public Product createProduct(@RequestBody Product product) {
-        return productService.saveProduct(product);
-    }  
+    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+        Product createdProduct = productService.createProduct(product);
+        return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
+    }
 
     @GetMapping
-    public List<Product> getAllProducts() {
-        return productService.list();
+    public ResponseEntity<List<Product>> getAllProducts() {
+        List<Product> products = productService.getAllProducts();
+        if (products.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(products);
     }
     
     @GetMapping("/{id}")
-    public Product getProductById(@PathVariable Long id) {
-        return productService.getProductById(id);
+    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+        Product product = productService.getProductById(id);
+        if (product == null) {
+            ResponseEntity.notFound().build();
+        } else {
+            ResponseEntity.ok(product);
+        }
+        ResponseEntity.status(HttpStatus.NOT_FOUND);
+        return null;
     }
 
     @PutMapping("/{id}")
-    public Product update(@PathVariable Long id, @RequestBody Product product) {
-        return productService.updateProduct(id, product);
+    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
+        Product updateProduct = productService.updateProduct(id, product);
+        if (updateProduct == null) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(updateProduct);
+        }
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        productService.deleteProduct(id);
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+    boolean deleted = productService.deleteProduct(id);
+    if(deleted) {
+        String message = "Produto com ID " + id + "deletado com sucesso.";
+        return ResponseEntity.noContent().build();
+    } else{
+        String message = "Produto com ID " + id + "não encontrado.";
+        return ResponseEntity.notFound().build();
+    }
     }
 }

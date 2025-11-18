@@ -4,13 +4,13 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
-
 @Entity
+@Table(name = "item_sales")
 @Data
 @NoArgsConstructor
 public class ItemSale {
 
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -21,18 +21,14 @@ public class ItemSale {
     private double subtotal;
 
     @ManyToOne
-    @JoinColumn(name = "productId")
+    @JoinColumn(name = "product_id")
     private Product product;
 
     @ManyToOne
-    @JoinColumn(name = "saleId")
+    @JoinColumn(name = "sale_id")
     private Sale sale;
 
     public void calculateSubtotal() {
         subtotal = getUnitPrice() * getQuantity();
-        System.out.println(getUnitPrice() + "X" + getQuantity() + "=" + subtotal);
     }
-
-
-
 }
