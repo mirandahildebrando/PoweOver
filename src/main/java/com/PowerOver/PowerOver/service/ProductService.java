@@ -46,4 +46,12 @@ public class ProductService {
         } return false;
     }
 
+    public ProductDTO toDTO(Product product) {
+        return new ProductDTO(
+            product.getId(),
+            product.getProductName(),
+            product.getProductPrice()
+        );
+    }
+
 }

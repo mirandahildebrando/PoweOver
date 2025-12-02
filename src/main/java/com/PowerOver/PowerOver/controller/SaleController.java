@@ -2,6 +2,9 @@ package com.PowerOver.PowerOver.controller;
 
 import com.PowerOver.PowerOver.model.Sale;
 import com.PowerOver.PowerOver.service.SaleService;
+
+import main.java.com.PowerOver.PowerOver.dto.SaleDTO;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,26 +21,30 @@ public class SaleController {
     }
 
     @PostMapping
-    public Sale createSale(@RequestBody Sale sale) {
-        return saleService.createSale(sale);
+    public ResponseEntity<SaleDTO> createSale(@RequestBody SaleDTO dto) {
+        SaleDTO createdSaleDTO = saleService.createSale(dto);
+        return ResponseEntity.status(201).body(createdSaleDTO);
     }
 
     @GetMapping
-    public List<Sale> list() {
-        return saleService.list();
+    public ResponseEntity<List<SaleDTO>> list() {
+        List<SaleDTO> sales = saleService.listAllDTOs();
+        if(sales.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        } return ResponseEntity.ok(sales);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Sale> getSaleById(@PathVariable Long id) {
-        Sale sale = saleService.getSaleById(id);
+    public ResponseEntity<SaleDTO> getSaleById(@PathVariable Long id) {
+        SaleDTO sale = saleService.getSaleById(id);
         if(sale == null){
             return ResponseEntity.notFound().build();
         } return ResponseEntity.ok(sale);
     }
 
-    @PutMapping
-    public ResponseEntity<Sale> updateSale(@PathVariable Long id, @RequestBody Sale sale){
-        Sale updateSale = saleService.updateSale(id, sale);
+    @PutMapping("/{id}")
+    public ResponseEntity<SaleDTO> updateSale(@PathVariable Long id, @RequestBody SaleTO dto){
+        SaleDTO updateSale = saleService.updateSale(id, dto);
         if(updateSale == null) {
             return ResponseEntity.notFound().build();
         } return ResponseEntity.ok(updateSale);

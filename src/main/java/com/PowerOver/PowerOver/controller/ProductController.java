@@ -24,13 +24,13 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+    public ResponseEntity<ProductDTO> createProduct(@RequestBody Product product) {
         Product createdProduct = productService.createProduct(product);
         return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<Product>> getAllProducts() {
+    public ResponseEntity<List<ProductDTO>> getAllProducts() {
         List<Product> products = productService.getAllProducts();
         if (products.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -39,19 +39,13 @@ public class ProductController {
     }
     
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+    public ProductDTO getProduct(@PathVariable Long id) {
         Product product = productService.getProductById(id);
-        if (product == null) {
-            ResponseEntity.notFound().build();
-        } else {
-            ResponseEntity.ok(product);
-        }
-        ResponseEntity.status(HttpStatus.NOT_FOUND);
-        return null;
+        return productService.toDTO(product);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
+    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id, @RequestBody Product product) {
         Product updateProduct = productService.updateProduct(id, product);
         if (updateProduct == null) {
             return ResponseEntity.notFound().build();

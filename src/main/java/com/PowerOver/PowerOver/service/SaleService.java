@@ -1,7 +1,13 @@
 package com.PowerOver.PowerOver.service;
 
+import com.PowerOver.PowerOver.model.Product;
 import com.PowerOver.PowerOver.model.Sale;
 import com.PowerOver.PowerOver.repository.SaleRepository;
+
+import main.java.com.PowerOver.PowerOver.dto.ItemSaleDTO;
+import main.java.com.PowerOver.PowerOver.dto.ProductDTO;
+import main.java.com.PowerOver.PowerOver.dto.SaleDTO;
+
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
@@ -46,6 +52,18 @@ public class SaleService {
         } return false;
     }
 
+    public SaleDTO toDTO(Sale sale) {
+        List<ItemSaleDTO> itemDTOs = sale.getItems()
+        .stream()
+        .map(this::toItemSaleDTO)
+        .toList();
 
+        return new SaleDTO(
+            sale.getId(),
+            sale.getDateSale(),
+            sale.getTotalValue(),
+            itemDTOs
+        );
+    }
 
 }
