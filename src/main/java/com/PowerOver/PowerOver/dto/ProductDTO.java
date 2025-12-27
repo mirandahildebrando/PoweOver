@@ -1,10 +1,7 @@
-package main.java.com.PowerOver.PowerOver.dto;
+package com.PowerOver.PowerOver.dto;
+
+
 
 public record ProductDTO(
-    Long id,
-    String productName,
-    double productPrice) {
-
-    
-
-} 
+    String productName, double productPrice, Integer productQuantity)
+     {}

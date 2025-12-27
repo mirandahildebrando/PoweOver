@@ -1,17 +1,12 @@
 package com.PowerOver.PowerOver.controller;
 
-import java.util.List;
-
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.*;
-
+import com.PowerOver.PowerOver.dto.ProductDTO;
 import com.PowerOver.PowerOver.model.Product;
 import com.PowerOver.PowerOver.service.ProductService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 @RestController
 @RequestMapping("/products")
@@ -23,46 +18,51 @@ public class ProductController {
         this.productService = productService;
     }
 
+   
     @PostMapping
-    public ResponseEntity<ProductDTO> createProduct(@RequestBody Product product) {
-        Product createdProduct = productService.createProduct(product);
-        return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
+    public ResponseEntity<Product> create(@RequestBody ProductDTO dto) {
+        Product novoProduto = productService.create(dto);
+        return ResponseEntity.ok(novoProduto);
     }
 
+   
     @GetMapping
-    public ResponseEntity<List<ProductDTO>> getAllProducts() {
-        List<Product> products = productService.getAllProducts();
-        if (products.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(products);
+    public ResponseEntity<List<Product>> listAll() {
+        List<Product> lista = productService.listAll();
+        return ResponseEntity.ok(lista);
     }
+
     
     @GetMapping("/{id}")
-    public ProductDTO getProduct(@PathVariable Long id) {
-        Product product = productService.getProductById(id);
-        return productService.toDTO(product);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id, @RequestBody Product product) {
-        Product updateProduct = productService.updateProduct(id, product);
-        if (updateProduct == null) {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<Product> getById(@PathVariable Long id) {
+        Product p = productService.findById(id);
+        
+        if (p != null) {
+            return ResponseEntity.ok(p);
         } else {
-            return ResponseEntity.ok(updateProduct);
+            
+            return ResponseEntity.notFound().build();
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
-    boolean deleted = productService.deleteProduct(id);
-    if(deleted) {
-        String message = "Produto com ID " + id + "deletado com sucesso.";
-        return ResponseEntity.noContent().build();
-    } else{
-        String message = "Produto com ID " + id + "não encontrado.";
-        return ResponseEntity.notFound().build();
+    
+    @PutMapping("/{id}")
+    public ResponseEntity<Product> update(@PathVariable Long id, @RequestBody ProductDTO dto) {
+        Product atualizado = productService.update(id, dto);
+        
+        if (atualizado != null) {
+            return ResponseEntity.ok(atualizado);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
+
+    
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        
+        productService.delete(id);
+        
+        return ResponseEntity.noContent().build();
     }
 }

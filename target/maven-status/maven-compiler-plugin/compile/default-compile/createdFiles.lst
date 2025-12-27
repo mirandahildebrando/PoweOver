@@ -1,0 +1,14 @@
+com\PowerOver\PowerOver\model\ItemSale.class
+com\PowerOver\PowerOver\model\Sale.class
+com\PowerOver\PowerOver\service\ProductService.class
+com\PowerOver\PowerOver\repository\SaleRepository.class
+com\PowerOver\PowerOver\dto\SaleDTO.class
+com\PowerOver\PowerOver\controller\ProductController.class
+com\PowerOver\PowerOver\repository\ItemSaleRepository.class
+com\PowerOver\PowerOver\controller\SaleController.class
+com\PowerOver\PowerOver\dto\ProductDTO.class
+com\PowerOver\PowerOver\service\SaleService.class
+com\PowerOver\PowerOver\dto\ItemSaleDTO.class
+com\PowerOver\PowerOver\PowerOverApplication.class
+com\PowerOver\PowerOver\model\Product.class
+com\PowerOver\PowerOver\repository\ProductRepository.class
