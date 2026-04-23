@@ -4,6 +4,8 @@ WORKDIR /app
 
 COPY . .
 
-RUN ./mvnw clean package -DskipTests
+RUN ./mvnw clean package -DskipTests || mvn clean package -DskipTests
+
+EXPOSE 8080
 
 CMD ["java", "-jar", "target/powerover-0.0.1-SNAPSHOT.jar"]
