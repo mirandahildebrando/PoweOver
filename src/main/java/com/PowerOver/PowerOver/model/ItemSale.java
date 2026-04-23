@@ -2,6 +2,7 @@ package com.PowerOver.PowerOver.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "item_sales")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class ItemSale {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,4 +28,8 @@ public class ItemSale {
     @JoinColumn(name = "sale_id")
     @JsonIgnore
     private Sale sale;
+
+    public void setSubTotal(double subtotal) {
+    this.subtotal = subtotal;
+}
 }
