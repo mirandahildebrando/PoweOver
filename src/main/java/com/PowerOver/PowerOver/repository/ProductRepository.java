@@ -7,6 +7,7 @@ import com.PowerOver.PowerOver.model.Product;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    // Additional query methods can be defined here if needed
+    
+    public boolean existsById(Long id);
 
 }

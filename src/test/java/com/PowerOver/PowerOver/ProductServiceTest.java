@@ -28,19 +28,24 @@ class ProductServiceTest {
     @Test
     @DisplayName("Deve criar um novo produto")
     void testCreateProduct() {
-        ProductDTO dto = new ProductDTO("Mouse", 50.0, 10);
-        Product savedProduct = new Product();
+    ProductDTO dto = new ProductDTO(null, "Mouse", 50.0, 10);
+
+    Product savedProduct = new Product();
         savedProduct.setId(1L);
         savedProduct.setProductName("Mouse");
+        savedProduct.setProductPrice(50.0);
+        savedProduct.setProductQuantity(10);
 
         when(productRepository.save(any(Product.class))).thenReturn(savedProduct);
 
-        Product result = productService.create(dto);
+    ProductDTO result = productService.create(dto);
 
         assertNotNull(result);
-        assertEquals("Mouse", result.getProductName());
-        verify(productRepository, times(1)).save(any());
+        assertEquals(1L, result.id());
+        assertEquals("Mouse", result.productName());
+        assertEquals(50.0, result.productPrice());
+        assertEquals(10, result.productQuantity());
 
-    }
-
+    verify(productRepository, times(1)).save(any(Product.class));
+}
 }

@@ -4,6 +4,7 @@ import com.PowerOver.PowerOver.model.Sale;
 import com.PowerOver.PowerOver.model.ItemSale;
 import com.PowerOver.PowerOver.repository.SaleRepository;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -15,15 +16,22 @@ public class SaleService {
         this.saleRepository = saleRepository;
     }
 
-   
     public Sale createSale(Sale sale) {
+
+        double total = 0.0;
+
         List<ItemSale> listaDeItens = sale.getItems();
-        
-        for (int i = 0; i < listaDeItens.size(); i++) {
-            ItemSale item = listaDeItens.get(i);
-            item.setSale(sale); 
+
+        for (ItemSale item : listaDeItens) {
+
+            item.setSale(sale);
+            double subTotal = item.getProduct().getProductPrice() * item.getQuantity();
+            item.setSubTotal(subTotal);
+
+            total += subTotal;
         }
 
+        sale.setTotalValue(total);
         return saleRepository.save(sale);
     }
 

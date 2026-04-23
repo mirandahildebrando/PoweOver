@@ -3,6 +3,8 @@ package com.PowerOver.PowerOver.service;
 import com.PowerOver.PowerOver.dto.ProductDTO;
 import com.PowerOver.PowerOver.model.Product;
 import com.PowerOver.PowerOver.repository.ProductRepository;
+
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -14,31 +16,59 @@ public class ProductService {
         this.repository = repository;
     }
 
-    public Product create(ProductDTO dto) {
+    public ProductDTO create(ProductDTO dto) {
         Product p = new Product();
         p.setProductName(dto.productName());
         p.setProductPrice(dto.productPrice());
         p.setProductQuantity(dto.productQuantity());
-        return repository.save(p);
+
+        Product saved = repository.save(p);
+
+        return new ProductDTO(
+            saved.getId(),
+            saved.getProductName(),
+            saved.getProductPrice(),
+            saved.getProductQuantity()
+        );
     }
 
-    public List<Product> listAll() {
-        return repository.findAll();
+    public List<ProductDTO> listAll() {
+        Sort sort = Sort.by("productName").ascending();
+        return repository.findAll(sort).stream()
+                .map(product -> new ProductDTO(
+                        product.getId(),
+                        product.getProductName(),
+                        product.getProductPrice(),
+                        product.getProductQuantity()
+                ))
+                .toList();
     }
 
-    public Product findById(Long id) {
-        return repository.findById(id).orElse(null);
+    public ProductDTO findById(Long id) {
+        return repository.findById(id).map(product -> new ProductDTO(
+                product.getId(),
+                product.getProductName(),
+                product.getProductPrice(),
+                product.getProductQuantity()
+        )).orElseThrow(() -> new RuntimeException("Produto não encontrado"));
     }
 
-    public Product update(Long id, ProductDTO dto) {
-        Product p = findById(id);
-        if (p != null) {
-            p.setProductName(dto.productName());
-            p.setProductPrice(dto.productPrice());
-            p.setProductQuantity(dto.productQuantity());
-            return repository.save(p);
-        }
-        return null;
+    public ProductDTO update(Long id, ProductDTO dto) {
+        Product p = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+
+        p.setProductName(dto.productName());
+        p.setProductPrice(dto.productPrice());
+        p.setProductQuantity(dto.productQuantity());
+
+        Product updated = repository.save(p);
+
+        return new ProductDTO(
+                updated.getId(),
+                updated.getProductName(),
+                updated.getProductPrice(),
+                updated.getProductQuantity()
+        );
     }
 
     public void delete(Long id) {
