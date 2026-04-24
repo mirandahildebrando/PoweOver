@@ -29,7 +29,5 @@ public class ItemSale {
     @JsonIgnore
     private Sale sale;
 
-    public void setSubTotal(double subtotal) {
-    this.subtotal = subtotal;
-}
+
 }

@@ -2,7 +2,9 @@ package com.PowerOver.PowerOver.service;
 
 import com.PowerOver.PowerOver.model.Sale;
 import com.PowerOver.PowerOver.model.ItemSale;
+import com.PowerOver.PowerOver.model.Product;
 import com.PowerOver.PowerOver.repository.SaleRepository;
+import com.PowerOver.PowerOver.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,27 +13,33 @@ import java.util.List;
 public class SaleService {
 
     private final SaleRepository saleRepository;
+    private final ProductRepository productRepository;
 
-    public SaleService(SaleRepository saleRepository) {
+    public SaleService(SaleRepository saleRepository, ProductRepository productRepository) {
         this.saleRepository = saleRepository;
+        this.productRepository = productRepository;
     }
 
     public Sale createSale(Sale sale) {
 
         double total = 0.0;
 
-        List<ItemSale> listaDeItens = sale.getItems();
+        for (ItemSale item : sale.getItems()) {
 
-        for (ItemSale item : listaDeItens) {
+            Product product = productRepository.findById(item.getProduct().getId())
+                    .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 
+            item.setProduct(product);
             item.setSale(sale);
-            double subTotal = item.getProduct().getProductPrice() * item.getQuantity();
-            item.setSubTotal(subTotal);
+
+            double subTotal = product.getProductPrice() * item.getQuantity();
+            item.setSubtotal(subTotal);
 
             total += subTotal;
         }
 
         sale.setTotalValue(total);
+
         return saleRepository.save(sale);
     }
 
