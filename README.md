@@ -1,60 +1,70 @@
-⚡ PowerOver | Sistema de Gestão de Vendas (Enterprise Edition)
-O PowerOver é uma solução robusta voltada para a automação de vendas e controle inteligente de inventário. Desenvolvida originalmente para atender demandas reais de mercado, a API foi aprimorada com o que há de mais moderno no ecossistema Spring Boot, garantindo alta performance, segurança e integridade de dados.
+⚡ PowerOver API | Sistema de Gestão de Vendas
 
-💼 Visão Geral da Solução
-A aplicação centraliza o fluxo comercial, permitindo o gerenciamento dinâmico de catálogos de produtos e a rastreabilidade completa de transações. O projeto foi estruturado seguindo os princípios de Clean Code e SOLID, facilitando a escalabilidade do sistema para grandes volumes de dados.
+O PowerOver é uma API REST desenvolvida para gerenciamento de vendas e controle de estoque, permitindo o cadastro de produtos, registro de transações e acompanhamento das operações comerciais.
 
-🛠️ Stack Tecnológica
-Core: Java 17 com Spring Boot 3.2+
+A aplicação foi construída com foco em boas práticas de desenvolvimento backend, utilizando arquitetura em camadas, persistência com banco relacional e deploy em ambiente de produção.
 
-Persistência: Spring Data JPA com Hibernate.
+🚀 API em Produção
 
-Banco de Dados: H2 Database (Ambiente de Desenvolvimento/Homologação).
+👉 https://poweover.onrender.com
 
-Documentação: OpenAPI 3.0 (Swagger) para integração facilitada com Front-end.
+📄 Documentação (Swagger)
 
-Qualidade & Testes: JUnit 5 e Mockito para testes automatizados.
+A API possui documentação interativa para testes dos endpoints:
 
-Gestão de Dependências: Apache Maven.
+👉 https://poweover.onrender.com/swagger-ui/index.html
 
-🚀 Guia de Implantação
-Para rodar a solução em ambiente local ou de homologação, siga os passos abaixo:
+🛠️ Tecnologias Utilizadas
+Java 17
+Spring Boot
+Spring Data JPA
+Hibernate
+PostgreSQL (produção)
+Maven
+Swagger (OpenAPI)
+🧱 Arquitetura
 
-Pré-requisitos: JDK 17+ e Maven instalados.
+O projeto segue o padrão de arquitetura em camadas:
 
-Configuração de Ambiente: Verifique se a variável JAVA_HOME está devidamente configurada.
+Controller → entrada e saída da API
+Service → regras de negócio
+Repository → acesso ao banco de dados
+DTO → transferência de dados entre camadas
+📌 Funcionalidades
+Cadastro de produtos
+Listagem de produtos
+Atualização e remoção de produtos
+Registro de vendas
+Consulta de vendas
+🗄️ Banco de Dados
 
-Build e Instalação:
+A aplicação utiliza PostgreSQL em produção, hospedado externamente.
 
-Bash
+Os dados são persistidos e mantidos mesmo após reinicialização da aplicação.
 
+⚙️ Execução Local
+Pré-requisitos
+Java 17+
+Maven
+Configuração
+
+Configure o application.properties com suas credenciais de banco (PostgreSQL local ou remoto).
+
+Rodar o projeto
 mvn clean install
-Execução:
-
-Bash
-
 mvn spring-boot:run
-🔗 Documentação Técnica (Swagger)
-A API expõe seus endpoints de forma documentada e interativa, permitindo testes rápidos de integração: 👉 http://localhost:8080/swagger-ui/index.html
-
-🗄️ Monitoramento de Dados (H2 Console)
-Para inspeção direta das tabelas em tempo real:
-
-Acesso: http://localhost:8080/h2-console
-
-JDBC URL: jdbc:h2:mem:power_over_db
-
-Credenciais: User: sa | Password: (vazio)
-
-🧪 Padrões de Qualidade e Garantia
-O projeto adota uma estratégia de testes rigorosa para assegurar que novas melhorias não impactem o funcionamento da operação:
-
-Unit Tests: Garantem a integridade das regras de negócio no ProductService.
-
-Integration Tests: Validam a comunicação HTTP e os contratos de resposta no ProductController.
-
-Execução dos testes de regressão:
-
-Bash
-
-mvn test
+🔗 Endpoints Principais
+Produtos
+POST /products → criar produto
+GET /products → listar produtos
+GET /products/{id} → buscar por id
+PUT /products/{id} → atualizar
+DELETE /products/{id} → deletar
+Vendas
+POST /sales → criar venda
+GET /sales → listar vendas
+GET /sales/{id} → buscar por id
+📈 Observações
+A API está em produção e pode ser testada via Swagger
+O projeto utiliza banco relacional com persistência real
+Estrutura preparada para evolução (ex: autenticação, integração com frontend)
